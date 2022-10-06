@@ -50,7 +50,7 @@ export default function SignIn() {
           <span className='ml-[5px] text-red-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/sign-up')}>Register</span>
           <span className='ml-[40px] mb-[10px] text-cyan-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/forgot-password')}>Forgot Password? </span>
           <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white'>Sign-In</button>
-          <h1 className='text-center font-bold'>OR</h1>
+          <h1 className='text-center font-bold  ml-[-150px]'>OR</h1>
           <button type="submit" className="w-[400px] bg-red-500 h-[40px] mt-[10px]"><i class="fa-brands fa-google"></i> Continue With Google</button>
         </div>
       </div>
