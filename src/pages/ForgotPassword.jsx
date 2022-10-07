@@ -1,10 +1,9 @@
-import{AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
+import {toast} from 'react-toastify';
 import React,{Fragment} from 'react'
 import SigninPhoto from '../static/sign-in.jpg';
 import { useNavigate } from 'react-router';
-
-
 import { useState } from 'react';
+import {sendPasswordResetEmail,getAuth} from 'firebase/auth';
 
 export default function SignIn() {
   const navigate=useNavigate();
@@ -12,6 +11,19 @@ export default function SignIn() {
   const[email,setEmail]=useState("");
   const onChange=(event)=>{
     setEmail(event.target.value);
+  }
+  async function sendLink(e){
+    e.preventDefault();
+   try {
+    const auth =getAuth();
+    await sendPasswordResetEmail(auth,email);
+    toast.success("Check you email account");
+    navigate("/sign-in")
+   } catch (error) {
+    toast.error("could not send link");
+   }
+    
+
   }
   return (
     <React.Fragment>
@@ -28,7 +40,7 @@ export default function SignIn() {
           <span className='mb-[10px] cursor-pointer'>Don't have an account?</span>
           <span className='ml-[5px] text-red-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/sign-up')}>Register</span>
           <span className='ml-[40px] mb-[10px] text-cyan-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/sign-in')}>Sign-In Instead </span>
-          <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white'>Send Reset Link</button>
+          <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white' onClick={sendLink}>Send Reset Link</button>
           <h1 className='text-center font-bold ml-[-150px]'>OR</h1>
           <button type="submit" className="w-[400px] bg-red-500 h-[40px] mt-[10px]"><i class="fa-brands fa-google"></i> Continue With Google</button>
         </div>

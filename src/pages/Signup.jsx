@@ -99,7 +99,7 @@ async function googleSignUp(){
           <img src={SigninPhoto} className="w-full rounded-[20px]"/>
         </div>
         <div className='w-90% md:w-[67%] lg:w-[40%] lg:ml-[50px] lg:mt-[100px] md:ml-[250px] ml-[30px]'>
-        <input id="name"onChange={onChange} value={name} type="text" placeholder='Full Name' className={`block w-[400px] border-2 mb-[10px] h-[40px] border-sky-500` } />
+        <input id="name" onChange={onChange} value={name} type="text" placeholder='Full Name' className={`block w-[400px] border-2 mb-[10px] h-[40px] border-sky-500` } />
           <input id="email"onChange={onChange} value={email} type="email" placeholder='Email address' className={`block w-[400px] border-2 mb-[10px] h-[40px] border-sky-500` } />
           <input id='password' onChange={onChange} value={password} type={showPassword ?'text' :'password'} placeholder="Password" className='block w-[400px] border-2 mb-[10px] h-[40px] border-sky-500 transition ease-in-out relative'/>
           {showPassword?(
