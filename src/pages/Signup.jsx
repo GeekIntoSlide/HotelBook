@@ -7,6 +7,7 @@ import {getAuth,createUserWithEmailAndPassword,updateProfile} from 'firebase/aut
 import { db } from '../firebase';
 import { serverTimestamp, setDoc } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 
 
 export default function SignIn() {
@@ -48,9 +49,11 @@ export default function SignIn() {
     delete formDataCopy.password;
     formDataCopy.timestamp=serverTimestamp();
     await setDoc(doc(db,"users",user.uid),formDataCopy);
+    toast.success("Sign-up Succesfully")
     navigate("/");
   } catch (error) {
-    console.log(error);
+    toast.error("Something went wrong");
+  
   }
 }
   return (
