@@ -30,7 +30,7 @@ export default function Header() {
     },[auth])
     
   return (
-    <div className='bg-white sticky top-0 border-b shadow-sm z-50'>
+    <div className='bg-white sticky top-0 border-b shadow-sm z-40'>
         <header className='flex justify-between items-center mx-auto px-3'>
             <div >
                 <img src={HotelLogo} alt='Logo' className="h-[100px] px-0" onClick={()=>navigate("/")}></img>
