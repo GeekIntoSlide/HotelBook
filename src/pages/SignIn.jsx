@@ -2,7 +2,9 @@ import{AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import React,{Fragment} from 'react'
 import SigninPhoto from '../static/sign-in.jpg';
 import { useNavigate } from 'react-router';
-
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { Auth } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 import { useState } from 'react';
 
@@ -31,6 +33,19 @@ export default function SignIn() {
       setShowPassword(true);
     }
   }
+  async function signIn(e){
+    e.preventDefault();
+    try {
+      const auth=getAuth();
+    const userInput=await 
+    signInWithEmailAndPassword(auth,email,password);
+    if(userInput.user){
+      navigate("/");
+    }
+    } catch (error) {
+      toast.error("Incorrect user details");
+    }
+  }
   return (
     <React.Fragment>
       <div className='text-center'>
@@ -49,7 +64,7 @@ export default function SignIn() {
           <span className='mb-[10px] cursor-pointer'>Don't have an account?</span>
           <span className='ml-[5px] text-red-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/sign-up')}>Register</span>
           <span className='ml-[40px] mb-[10px] text-cyan-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/forgot-password')}>Forgot Password? </span>
-          <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white'>Sign-In</button>
+          <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white' onClick={signIn}>Sign-In</button>
           <h1 className='text-center font-bold  ml-[-150px]'>OR</h1>
           <button type="submit" className="w-[400px] bg-red-500 h-[40px] mt-[10px]"><i class="fa-brands fa-google"></i> Continue With Google</button>
         </div>
