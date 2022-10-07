@@ -3,12 +3,12 @@ import React,{Fragment} from 'react'
 import SigninPhoto from '../static/sign-in.jpg';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
-import {getAuth,createUserWithEmailAndPassword,updateProfile} from 'firebase/auth';
+import {getAuth,createUserWithEmailAndPassword,updateProfile, signInWithPopup} from 'firebase/auth';
 import { db } from '../firebase';
-import { serverTimestamp, setDoc } from 'firebase/firestore';
+import { getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
-
+import { GoogleAuthProvider } from 'firebase/auth';
 
 export default function SignIn() {
   const navigate=useNavigate();
@@ -52,8 +52,41 @@ export default function SignIn() {
     toast.success("Sign-up Succesfully")
     navigate("/");
   } catch (error) {
-    toast.error("Something went wrong");
+    if(name.length<1){
+      toast.error("Please enter name")
+      return(false);
+    }
+    else if(password.length<7)
+    {
+      toast.error("Password is too small")
+      return(false)
+    }
+    else{
+    toast.error("User already exist");
+  }
   
+  }
+}
+async function googleSignUp(){
+  try {
+    const auth=getAuth();
+    const provider=new 
+    GoogleAuthProvider() 
+    const result=await signInWithPopup(auth,provider);
+    const user=result.user;
+    const docRef=doc(db,'users',user.uid);
+    const docSnap=await getDoc(docRef);
+    if(!docSnap.exists()){
+      await setDoc(docRef,{
+        name:user.displayName,
+        email:user.email,
+        timestamp:serverTimestamp()
+
+      })
+      navigate("/")
+    }
+  } catch (error) {
+    toast.error("Can't continue with google")
   }
 }
   return (
@@ -77,7 +110,7 @@ export default function SignIn() {
           <span className=' mt-[-10px] ml-[70px] mb-[10px] text-cyan-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/forgot-password')}>Forgot Password? </span>
           <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white' onClick={signup}>Sign-Un</button>
           <h1 className='text-center font-bold  ml-[-150px]'>OR</h1>
-          <button type="submit" className="w-[400px] bg-red-500 h-[40px] mt-[10px]"><i class="fa-brands fa-google"></i> Continue With Google</button>
+          <button type="submit" className="w-[400px] bg-red-500 h-[40px] mt-[10px]"  onClick={googleSignUp}><i class="fa-brands fa-google"></i> Continue With Google</button>
         </div>
       </div>
 
