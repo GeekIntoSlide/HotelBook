@@ -6,7 +6,9 @@ import { toast } from 'react-toastify';
 import { updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { doc } from 'firebase/firestore';
+import { useAuthStatus } from '../components/hooks/useAuthStatus';
 export default function Profile() {
+  const{loggedIn}=useAuthStatus();
   const auth=getAuth();
   const navigate=useNavigate();
   const[formData,setFormdData]=useState({
@@ -16,6 +18,7 @@ export default function Profile() {
   const{name,email}=formData;
   function onLogout(){
     auth.signOut();
+
     navigate("/");
   }
   const[edit,setEdit]=useState(false);
