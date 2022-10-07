@@ -2,9 +2,12 @@ import{AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import React,{Fragment} from 'react'
 import SigninPhoto from '../static/sign-in.jpg';
 import { useNavigate } from 'react-router';
-
-
 import { useState } from 'react';
+import {getAuth,createUserWithEmailAndPassword,updateProfile} from 'firebase/auth';
+import { db } from '../firebase';
+import { serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
+
 
 export default function SignIn() {
   const navigate=useNavigate();
@@ -31,6 +34,25 @@ export default function SignIn() {
       setShowPassword(true);
     }
   }
+  async function signup(e){
+    e.preventDefault();
+  try {
+    const auth=getAuth();
+    const userCredential=await 
+    createUserWithEmailAndPassword(auth,email,password);
+    updateProfile(auth.currentUser,{
+      displayName:name
+    })
+    const user=userCredential.user;
+    const formDataCopy={...formData};
+    delete formDataCopy.password;
+    formDataCopy.timestamp=serverTimestamp();
+    await setDoc(doc(db,"users",user.uid),formDataCopy);
+    navigate("/");
+  } catch (error) {
+    console.log(error);
+  }
+}
   return (
     <React.Fragment>
       <div className='text-center'>
@@ -50,7 +72,7 @@ export default function SignIn() {
           <span className='mb-[10px] mt-[-10px] cursor-pointer'>have an account?</span>
           <span className=' mt-[-10px] ml-[5px] text-red-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/sign-In')}>Sign-In</span>
           <span className=' mt-[-10px] ml-[70px] mb-[10px] text-cyan-400 mb-[10px] cursor-pointer' onClick={()=>navigate('/forgot-password')}>Forgot Password? </span>
-          <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white'>Sign-In</button>
+          <button  type='submit' className='bg-sky-500 block w-[400px] h-[40px] mb-[10px] mt-[10px] text-white' onClick={signup}>Sign-Un</button>
           <h1 className='text-center font-bold  ml-[-150px]'>OR</h1>
           <button type="submit" className="w-[400px] bg-red-500 h-[40px] mt-[10px]"><i class="fa-brands fa-google"></i> Continue With Google</button>
         </div>
